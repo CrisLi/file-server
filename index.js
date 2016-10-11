@@ -78,7 +78,28 @@ conn.once('open', () => {
         });
       }
     });
+  });
 
+  app.delete("/files/:id", (req, res) => {
+    gfs.exist({ _id: req.params.id }, (err, found) => {
+      if (err) {
+        throw err;
+      }
+      if (found) {
+        gfs.remove({ _id: req.params.id }, (err) => {
+          if (err) {
+            throw err;
+          }
+          res.status(200).json({ _id: req.params.id });
+        });
+      } else {
+        console.error(`file with id ${req.params.id} not found`);
+        res.status(404).json({
+          code: '404',
+          message: `file with id ${req.params.id} not found`
+        });
+      }
+    });
   });
 
   app.use((err, req, res, next) => {
