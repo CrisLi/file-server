@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  mongo:
+    image: mongo:latest
+    # ports: ["27017:27017"]
+    volumes:
+      - "./.data/mongo/configdb:/data/configdb"
+      - "./.data/mongo/db:/data/db"
+  reits-files:
+    depends_on:
+      - mongo
+    restart: always
+    build: .
+    volumes:
+      - "./uploads:/server/uploads"
+    links:
+      - mongo
+    environment:
+      - PORT=9000
+      - MONGO_URL=mongodb://mongo/app_files
+    ports: ["9000:9000"]
