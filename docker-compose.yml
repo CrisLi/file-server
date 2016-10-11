@@ -7,7 +7,7 @@ services:
     volumes:
       - "./.data/mongo/configdb:/data/configdb"
       - "./.data/mongo/db:/data/db"
-  reits-files:
+  file-server:
     depends_on:
       - mongo
     restart: always
@@ -19,4 +19,4 @@ services:
     environment:
       - PORT=9000
       - MONGO_URL=mongodb://mongo/app_files
-    ports: ["9000:9000"]
+    ports: ["7080:9000"] # access 7080
